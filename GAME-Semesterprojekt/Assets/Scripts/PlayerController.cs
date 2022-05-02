@@ -4,29 +4,37 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float horizontalInput;
-    public float verticalInput;
-    public float speed = 10;
-    public float rotationSpeed = 300;
-    public float rotationInput;
+    public float horizontalInput, verticalInput, rotationInput, viewY;
+    public float speed = 10, rotationSpeed = 300;
+    public GameObject Island;
+    Vector3 Vforward, Vright;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Island = GameObject.Find("Island");
+            // InverseTransformVector try to change it form wold to local
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * speed * horizontalInput * Time.deltaTime);
+        // convert local input to world coordinate
+        // so that player always moves up, when steering up, independent of player rotation
+        Vforward = transform.InverseTransformVector(Vector3.forward);
+        Vright = transform.InverseTransformVector(Vector3.right);
 
-        verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * speed * verticalInput * Time.deltaTime);
-
+        // Get inputs
+        horizontalInput = Input.GetAxis("Horizontal1");
+        verticalInput = Input.GetAxis("Vertical1");
         rotationInput = Input.GetAxis("Rotate");
-        transform.Rotate(Vector3.up, rotationSpeed * rotationInput * Time.deltaTime, Space.World);
+        viewY = Input.GetAxis("5th Axis");
+
+        // change player position and rotation
+        transform.Translate(Vright * speed * horizontalInput * Time.deltaTime);
+        transform.Translate(Vforward * speed * verticalInput * Time.deltaTime);
+
+        transform.Rotate(Island.transform.up, rotationSpeed * rotationInput * Time.deltaTime, Space.World);
         
     }
 }
