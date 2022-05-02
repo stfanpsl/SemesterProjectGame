@@ -8,7 +8,7 @@ public class Munition : MonoBehaviour
 
     //Time until 
     private float _ratioTimeBlink = 0.6f;
-  
+
     private float _blinkInterval;
     private float _numBlinks = 5;
     private Renderer _renderer;
@@ -41,11 +41,22 @@ public class Munition : MonoBehaviour
     {
         yield return new WaitForSeconds(_ratioTimeBlink * TimeToLive);
 
-        while(true)
+        while (true)
         {
             _renderer.enabled = !_renderer.enabled;
             yield return new WaitForSeconds(seconds);
         }
-        
+
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if (other.gameObject.CompareTag("Player1"))
+        {
+
+            Destroy(gameObject);
+            other.gameObject.GetComponent<PlayerShoot>().hasAmmunition = true;
+        }
     }
 }
