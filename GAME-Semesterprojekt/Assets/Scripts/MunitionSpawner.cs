@@ -5,8 +5,10 @@ using UnityEngine;
 public class MunitionSpawner : MonoBehaviour
 {
 
-    private float _spawnRangeX;
-    private float _spawnRangeZ;
+    private float _spawnRangeXMax;
+    private float _spawnRangeXMin;
+    private float _spawnRangeZMin;
+    private float _spawnRangeZMax;
     private float _spawnIntervalRange;
     private float _spawnOffset;
 
@@ -14,8 +16,10 @@ public class MunitionSpawner : MonoBehaviour
 
     void Start()
     {
-        _spawnRangeX = 14;
-        _spawnRangeZ = 18;
+        _spawnRangeXMin = -6;
+        _spawnRangeXMax = 6;
+        _spawnRangeZMin = -10;
+        _spawnRangeZMax = 10;
         _spawnOffset = 5;
 
         Invoke("SpawnRandomMunition", _spawnOffset);
@@ -30,7 +34,7 @@ public class MunitionSpawner : MonoBehaviour
 
     private Vector3 RandomSpawnPosition()
     {
-        return new Vector3(Random.Range(0, _spawnRangeX), 0, Random.Range(0, _spawnRangeZ));
+        return new Vector3(Random.Range(_spawnRangeXMin, _spawnRangeXMax), 0, Random.Range(_spawnRangeZMin, _spawnRangeZMax));
     }
 
     private void SpawnRandomMunition()
@@ -43,7 +47,7 @@ public class MunitionSpawner : MonoBehaviour
         //Abbruchbedingung
         if (true)
         {
-            Invoke("SpawnRandomMunition", Random.Range(0,Munition[ranPosMunition].SpawnIntervalNextMunition));
+            Invoke("SpawnRandomMunition", Random.Range(0, Munition[ranPosMunition].SpawnIntervalNextMunition));
         }
 
 
